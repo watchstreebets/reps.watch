@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Watch Reviews</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="index.html" class="active">Reviews</a>
+            <a href="dealers.html">Trusted Dealers</a>
+        </nav>
+    </header>
+    <main>
+        <h1>Watch Reviews</h1>
+        <div class="controls-container">
+            <div class="legend">
+                <span class="legend-item"><span class="legend-color highlight-gold"></span> Super Rep</span>
+                <span class="legend-item"><span class="legend-color highlight-green"></span> NWBIG</span>
+            </div>
+            <div class="filters">
+                <input type="text" id="searchInput" placeholder="Search...">
+                <select id="brandFilter"><option value="">All Brands</option></select>
+                <select id="modelFilter"><option value="">All Models</option></select>
+                <select id="factoryFilter"><option value="">All Factories</option></select>
+                <select id="movementFilter"><option value="">All Movements</option></select>
+                <input type="number" id="ratingFilter" placeholder="Min Rating" step="0.1">
+                <button id="clearFiltersButton">Clear Filters</button>
+            </div>
+            <div class="edit-controls">
+                <label for="edit-mode-toggle">Edit Mode:</label>
+                <input type="checkbox" id="edit-mode-toggle">
+                <button id="save-button" style="display:none;">Save Changes</button>
+            </div>
+        </div>
+
+        <table id="reviews-table">
+            <thead>
+                <tr>
+                    <th>Image</th>
+                    <th class="sortable" data-sort="brand">Brand</th>
+                    <th class="sortable" data-sort="model">Model</th>
+                    <th class="sortable" data-sort="reference_number">Reference</th>
+                    <th class="sortable" data-sort="factory">Factory</th>
+                    <th class="sortable" data-sort="version">Version</th>
+                    <th class="sortable" data-sort="movement">Movement</th>
+                    <th class="sortable" data-sort="rating">Rating</th>
+                    <th class="sortable" data-sort="notes">Notes</th>
+                </tr>
+            </thead>
+            <tbody id="reviews-body"></tbody>
+        </table>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>
