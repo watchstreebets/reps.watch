@@ -1,0 +1,101 @@
+/*
+=============================================================================
+   Definitive Responsive Styles for Mobile (Max-width: 768px)
+==========================================================================
+*/
+
+/* Apply a base font size and box-sizing for consistency */
+html {
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+*, *::before, *::after {
+    box-sizing: inherit;
+}
+
+@media screen and (max-width: 768px) {
+    main {
+        padding: 0 1rem;
+    }
+
+    /* Hide table headers on mobile */
+    table thead {
+        display: none;
+    }
+
+    /* Reset table elements to behave like simple blocks */
+    table, table tbody, table tr, table td {
+        display: block;
+        width: 100%;
+    }
+
+    /* Style each row as a distinct card */
+    table tr {
+        margin-bottom: 1.5rem;
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    /* Core layout for each data cell (label + value) */
+    table td {
+        display: flex;
+        justify-content: space-between; /* Pushes label and value to opposite ends */
+        align-items: center;
+        padding: 10px 15px;
+        border-bottom: 1px solid var(--border-color);
+        gap: 1rem; /* Creates space between label and value */
+    }
+
+    /* Remove border from the very last cell in a card */
+    table tr td:last-of-type {
+        border-bottom: none;
+    }
+
+    /* Style the data label (e.g., "Factory") */
+    table td::before {
+        content: attr(data-label);
+        font-weight: 600;
+        color: var(--primary-color);
+        text-align: left;
+        flex-shrink: 0; /* Prevents the label from shrinking */
+    }
+
+    /* Style the data value (e.g., "VSF") */
+    table td > span {
+        text-align: right;
+        word-break: break-word;
+        min-width: 0; /* CRITICAL for preventing flexbox overflow */
+    }
+
+    /* Ensure links within values are also aligned and wrap correctly */
+    table td a {
+        text-align: right;
+        word-break: break-all;
+    }
+
+    /* === Specific adjustments for the reviews table === */
+
+    #reviews-table td[data-col="image_url"] {
+        padding: 10px;
+        justify-content: center;
+    }
+
+    #reviews-table td[data-col="image_url"]::before {
+        display: none; /* No label needed for the image */
+    }
+
+    .review-image {
+        width: 120px;
+        height: 120px;
+    }
+
+    /* Hide redundant columns on mobile */
+    #reviews-table td[data-col="brand"],
+    #reviews-table td[data-col="model"],
+    #reviews-table td[data-col="reference_number"] {
+        display: none;
+    }
+}

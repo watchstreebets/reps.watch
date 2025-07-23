@@ -26,12 +26,35 @@ document.addEventListener('DOMContentLoaded', () => {
         tableBody.innerHTML = '';
         dealers.forEach(dealer => {
             const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>${dealer.name}</td>
-                <td><a href="${dealer.website}" target="_blank">${dealer.website}</a></td>
-                <td>${dealer.contact}</td>
-                <td>${dealer.notes}</td>
-            `;
+
+            const cellName = document.createElement('td');
+            cellName.dataset.label = 'Dealer Name';
+            const nameSpan = document.createElement('span');
+            nameSpan.textContent = dealer.name;
+            cellName.appendChild(nameSpan);
+            row.appendChild(cellName);
+
+            const cellWebsite = document.createElement('td');
+            cellWebsite.dataset.label = 'Website';
+            const websiteSpan = document.createElement('span');
+            websiteSpan.innerHTML = `<a href="${dealer.website}" target="_blank">${dealer.website}</a>`;
+            cellWebsite.appendChild(websiteSpan);
+            row.appendChild(cellWebsite);
+
+            const cellContact = document.createElement('td');
+            cellContact.dataset.label = 'Contact Method';
+            const contactSpan = document.createElement('span');
+            contactSpan.textContent = dealer.contact;
+            cellContact.appendChild(contactSpan);
+            row.appendChild(cellContact);
+
+            const cellNotes = document.createElement('td');
+            cellNotes.dataset.label = 'Notes';
+            const notesSpan = document.createElement('span');
+            notesSpan.textContent = dealer.notes;
+            cellNotes.appendChild(notesSpan);
+            row.appendChild(cellNotes);
+
             tableBody.appendChild(row);
         });
     }

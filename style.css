@@ -170,3 +170,84 @@ table tbody tr:hover {
 #dealers-table a:hover {
     text-decoration: underline;
 }
+
+/* =============================================================================
+   Responsive Styles for Mobile
+   ========================================================================== */
+@media screen and (max-width: 768px) {
+    main {
+        padding: 0 1rem;
+    }
+
+    table thead {
+        display: none; /* Hide table headers on mobile */
+    }
+
+    table, table tbody, table tr, table td {
+        display: block;
+        width: 100%;
+    }
+
+    table tr {
+        margin-bottom: 1.5rem;
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    table td {
+        display: flex;
+        justify-content: space-between; /* Pushes label and value to opposite ends */
+        align-items: center;
+        padding: 10px 15px;
+        border: none;
+        border-bottom: 1px solid var(--border-color);
+        gap: 1rem;
+    }
+
+    table tr td:last-of-type {
+        border-bottom: none;
+    }
+
+    table td::before {
+        content: attr(data-label);
+        font-weight: 600;
+        color: var(--primary-color);
+        text-align: left;
+        flex-shrink: 0; /* Prevents the label from shrinking */
+    }
+
+    table td > span {
+        text-align: right;
+        word-break: break-word;
+        min-width: 0; /* CRITICAL for preventing flexbox overflow */
+    }
+
+    table td a {
+        text-align: right;
+        word-break: break-all;
+    }
+
+    /* Specific adjustments for the reviews table */
+    #reviews-table td[data-col="image_url"] {
+        padding: 10px;
+        justify-content: center;
+    }
+
+    #reviews-table td[data-col="image_url"]::before {
+        display: none;
+    }
+
+    .review-image {
+        width: 120px;
+        height: 120px;
+    }
+
+    /* Hide redundant columns on mobile */
+    #reviews-table td[data-col="brand"],
+    #reviews-table td[data-col="model"],
+    #reviews-table td[data-col="reference_number"] {
+        display: none;
+    }
+}

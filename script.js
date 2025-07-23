@@ -88,7 +88,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     // Image cell
                     const cellImage = document.createElement('td');
                     cellImage.rowSpan = rowspan;
-                cellImage.dataset.col = 'image_url';
+                    cellImage.dataset.col = 'image_url';
+                    cellImage.dataset.label = 'Image';
                     const imageUrl = review.image_url && review.image_url.trim() !== '' ? review.image_url : `assets/${review.id}.webp`;
                     cellImage.innerHTML = `<img src="${imageUrl}" class="review-image" alt="${review.brand} ${review.model}" onerror="this.onerror=null;this.src='assets/default.png';">`;
                     row.appendChild(cellImage);
@@ -98,6 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         const cell = document.createElement('td');
                         cell.rowSpan = rowspan;
                         cell.dataset.col = colName;
+                        cell.dataset.label = colName.charAt(0).toUpperCase() + colName.slice(1).replace('_', ' ');
                         cell.textContent = review[colName];
                         row.appendChild(cell);
                     });
@@ -107,11 +109,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 ['factory', 'version', 'movement', 'rating', 'notes'].forEach(colName => {
                     const cell = document.createElement('td');
                     cell.dataset.col = colName;
+                    cell.dataset.label = colName.charAt(0).toUpperCase() + colName.slice(1);
+                    
+                    const valueSpan = document.createElement('span');
                     if (colName === 'rating') {
-                        cell.textContent = review.rating ? review.rating.toFixed(1) : '0.0';
+                        valueSpan.textContent = review.rating ? review.rating.toFixed(1) : '0.0';
                     } else {
-                        cell.textContent = review[colName] || '';
+                        valueSpan.textContent = review[colName] || '';
                     }
+                    cell.appendChild(valueSpan);
                     row.appendChild(cell);
                 });
 
