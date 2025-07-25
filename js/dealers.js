@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .catch(error => {
             console.error('Could not load or parse dealers.csv:', error);
-            tableBody.innerHTML = '<tr><td colspan="4">Could not load dealer information.</td></tr>';
+            tableBody.innerHTML = '<tr><td colspan="5">Could not load dealer information.</td></tr>';
         });
 
     function renderDealers(dealers) {
@@ -41,12 +41,27 @@ document.addEventListener('DOMContentLoaded', () => {
             cellWebsite.appendChild(websiteSpan);
             row.appendChild(cellWebsite);
 
-            const cellContact = document.createElement('td');
-            cellContact.dataset.label = 'Contact Method';
-            const contactSpan = document.createElement('span');
-            contactSpan.textContent = dealer.contact;
-            cellContact.appendChild(contactSpan);
-            row.appendChild(cellContact);
+            const cellEmail = document.createElement('td');
+            cellEmail.dataset.label = 'Email';
+            const emailSpan = document.createElement('span');
+            if (dealer.email && dealer.email.trim()) {
+                emailSpan.innerHTML = `<a href="mailto:${dealer.email}">${dealer.email}</a>`;
+            } else {
+                emailSpan.textContent = '-';
+            }
+            cellEmail.appendChild(emailSpan);
+            row.appendChild(cellEmail);
+
+            const cellWhatsApp = document.createElement('td');
+            cellWhatsApp.dataset.label = 'WhatsApp';
+            const whatsappSpan = document.createElement('span');
+            if (dealer.whatsapp && dealer.whatsapp.trim()) {
+                whatsappSpan.innerHTML = `<a href="https://wa.me/${dealer.whatsapp.replace(/[^0-9]/g, '')}">${dealer.whatsapp}</a>`;
+            } else {
+                whatsappSpan.textContent = '-';
+            }
+            cellWhatsApp.appendChild(whatsappSpan);
+            row.appendChild(cellWhatsApp);
 
             const cellNotes = document.createElement('td');
             cellNotes.dataset.label = 'Notes';
