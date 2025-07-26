@@ -27,9 +27,28 @@ header {
     z-index: 1000;
 }
 
+.header-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.logo-image {
+    height: 40px;
+    width: auto;
+    object-fit: contain;
+}
+
 nav {
     display: flex;
-    justify-content: center;
     gap: 2rem;
 }
 
@@ -158,6 +177,15 @@ table tbody tr:hover {
     height: 15px;
     margin-right: 5px;
     border: 1px solid #ccc;
+}
+
+/* Hide mobile-specific elements on desktop */
+.mobile-details {
+    display: none;
+}
+
+.mobile-variations {
+    display: none;
 }
 
 /* Tooltip Styles */

@@ -79,33 +79,116 @@ document.addEventListener('DOMContentLoaded', () => {
 
         for (const key in groupedReviews) {
             const group = groupedReviews[key];
-            group.forEach((review, index) => {
-                const row = document.createElement('tr');
-                row.dataset.key = `${review.id}|${review.factory}|${review.version}`;
-
-                if (index === 0) {
-                    const rowspan = group.length > 1 ? group.length : 1;
-                    // Image cell
-                    const cellImage = document.createElement('td');
-                    cellImage.rowSpan = rowspan;
-                    cellImage.dataset.col = 'image_url';
-                    cellImage.dataset.label = 'Image';
-                    const imageUrl = review.image_url && review.image_url.trim() !== '' ? review.image_url : `assets/${review.id}.webp`;
-                    cellImage.innerHTML = `<img src="${imageUrl}" class="review-image" alt="${review.brand} ${review.model}" onerror="this.onerror=null;this.src='assets/default.png';">`;
-                    row.appendChild(cellImage);
-
-                    // Grouped cells
-                    ['brand', 'model', 'reference_number'].forEach(colName => {
-                        const cell = document.createElement('td');
-                        cell.rowSpan = rowspan;
-                        cell.dataset.col = colName;
-                        cell.dataset.label = colName.charAt(0).toUpperCase() + colName.slice(1).replace('_', ' ');
-                        cell.textContent = review[colName];
-                        row.appendChild(cell);
-                    });
+            
+            // Create only one row per product group (consolidate all variations on mobile)
+            const row = document.createElement('tr');
+            row.dataset.key = key; // Use the product key instead of individual variation key
+            
+            // Always create the consolidated layout (mobile will show variations table, desktop will show first item)
+            const review = group[0]; // Use first review for basic product info
+            const rowspan = group.length; // Always span all variations for desktop
+            // Image cell with mobile details
+            const cellImage = document.createElement('td');
+            cellImage.rowSpan = rowspan;
+            cellImage.dataset.col = 'image_url';
+            cellImage.dataset.label = 'Image';
+            const imageUrl = review.image_url && review.image_url.trim() !== '' ? review.image_url : `assets/${review.id}.webp`;
+            
+            // Create mobile-friendly layout with image and details
+            const imageElement = `<img src="${imageUrl}" class="review-image" alt="${review.brand} ${review.model}" onerror="this.onerror=null;this.src='assets/default.png';">`;
+            
+            // Create the mobile layout with image and details section
+            let mobileLayout = '<div class="mobile-image-section">';
+            mobileLayout += imageElement;
+            
+            mobileLayout += '<div class="mobile-details">';
+            if (review.brand && review.brand.trim()) {
+                mobileLayout += `<div class="detail-item"><span class="detail-label">Brand:</span><span class="detail-value">${review.brand}</span></div>`;
+            }
+            if (review.model && review.model.trim()) {
+                mobileLayout += `<div class="detail-item"><span class="detail-label">Model:</span><span class="detail-value">${review.model}</span></div>`;
+            }
+            if (review.reference_number && review.reference_number.trim()) {
+                mobileLayout += `<div class="detail-item"><span class="detail-label">Reference:</span><span class="detail-value">${review.reference_number}</span></div>`;
+            }
+            mobileLayout += '</div>'; // Close mobile-details
+            mobileLayout += '</div>'; // Close mobile-image-section
+            
+            // Create variations table for all factory/version combinations
+            let variationsTable = '<table class="mobile-variations">';
+            variationsTable += '<thead><tr><th>Factory</th><th>Version</th><th>Movement</th><th>Rating</th><th>Notes</th></tr></thead>';
+            variationsTable += '<tbody>';
+            
+            // Add all variations for this product with color highlighting
+            group.forEach(variation => {
+                let rowClass = '';
+                if (variation.rating >= 4.5) {
+                    rowClass = ' class="highlight-gold"';
+                } else if (variation.rating >= 4.0) {
+                    rowClass = ' class="highlight-green"';
                 }
+                
+                variationsTable += `<tr${rowClass}>`;
+                variationsTable += `<td>${variation.factory || ''}</td>`;
+                variationsTable += `<td>${variation.version || ''}</td>`;
+                variationsTable += `<td>${variation.movement || ''}</td>`;
+                variationsTable += `<td class="rating-cell">${variation.rating ? variation.rating.toFixed(1) : '0.0'}</td>`;
+                variationsTable += `<td>${variation.notes || ''}</td>`;
+                variationsTable += '</tr>';
+            });
+            
+            variationsTable += '</tbody></table>';
+            
+            // Combine everything into the final mobile layout
+            let finalMobileContent = mobileLayout + '<div class="mobile-details">' + variationsTable + '</div>';
+            
+            // Debug: log what we're generating
+            console.log('Final mobile content:', finalMobileContent);
+            console.log('Group data:', group);
+            
+            cellImage.innerHTML = finalMobileContent;
+            row.appendChild(cellImage);
 
-                // Non-grouped cells
+            // Grouped cells (brand, model, reference)
+            ['brand', 'model', 'reference_number'].forEach(colName => {
+                const cell = document.createElement('td');
+                cell.rowSpan = rowspan;
+                cell.dataset.col = colName;
+                cell.dataset.label = colName.charAt(0).toUpperCase() + colName.slice(1).replace('_', ' ');
+                cell.textContent = review[colName];
+                row.appendChild(cell);
+            });
+        
+            // Only create the first row (main product row)
+            const variation = group[0]; // Use first variation for the main row
+        
+            // Non-grouped cells (factory, version, movement, rating, notes)
+            ['factory', 'version', 'movement', 'rating', 'notes'].forEach(colName => {
+                const cell = document.createElement('td');
+                cell.dataset.col = colName;
+                cell.dataset.label = colName.charAt(0).toUpperCase() + colName.slice(1);
+                
+                const valueSpan = document.createElement('span');
+                if (colName === 'rating') {
+                    valueSpan.textContent = variation.rating ? variation.rating.toFixed(1) : '0.0';
+                } else {
+                    valueSpan.textContent = variation[colName] || '';
+                }
+                cell.appendChild(valueSpan);
+                row.appendChild(cell);
+            });
+
+            highlightRow(row, variation.rating);
+            tableBody.appendChild(row);
+        
+            // For desktop: create additional rows for other variations (these will be hidden on mobile)
+            for (let i = 1; i < group.length; i++) {
+                const additionalVariation = group[i];
+                const additionalRow = document.createElement('tr');
+                additionalRow.dataset.key = `${additionalVariation.id}|${additionalVariation.factory}|${additionalVariation.version}`;
+                additionalRow.classList.add('desktop-only-variation');
+                
+                // Non-grouped cells for additional variations
                 ['factory', 'version', 'movement', 'rating', 'notes'].forEach(colName => {
                     const cell = document.createElement('td');
                     cell.dataset.col = colName;
@@ -113,17 +196,17 @@ document.addEventListener('DOMContentLoaded', () => {
                     
                     const valueSpan = document.createElement('span');
                     if (colName === 'rating') {
-                        valueSpan.textContent = review.rating ? review.rating.toFixed(1) : '0.0';
+                        valueSpan.textContent = additionalVariation.rating ? additionalVariation.rating.toFixed(1) : '0.0';
                     } else {
-                        valueSpan.textContent = review[colName] || '';
+                        valueSpan.textContent = additionalVariation[colName] || '';
                     }
                     cell.appendChild(valueSpan);
-                    row.appendChild(cell);
+                    additionalRow.appendChild(cell);
                 });
 
-                highlightRow(row, review.rating);
-                tableBody.appendChild(row);
-            });
+                highlightRow(additionalRow, additionalVariation.rating);
+                tableBody.appendChild(additionalRow);
+            }
         }
 
         if (editModeToggle.checked) {
