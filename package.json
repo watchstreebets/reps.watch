@@ -1,0 +1,25 @@
+{
+  "name": "reps.watch",
+  "version": "1.0.0",
+  "description": "This is a simple web application to track and review watches. It allows for viewing, sorting, filtering, and editing watch review data stored in a CSV file.",
+  "main": "generate_blog_markdown.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node build-guides.js && live-server dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github-raunpol:watchstreebets/reps.watch.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "front-matter": "^4.0.2",
+    "fs-extra": "^11.3.0",
+    "marked": "^16.1.1"
+  },
+  "devDependencies": {
+    "live-server": "^1.2.2"
+  }
+}

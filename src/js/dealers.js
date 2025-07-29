@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     const tableBody = document.querySelector('#dealers-table tbody');
 
-    fetch('data/dealers.csv')
+        fetch('/data/dealers.csv')
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
