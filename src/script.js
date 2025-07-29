@@ -92,10 +92,10 @@ document.addEventListener('DOMContentLoaded', () => {
             cellImage.rowSpan = rowspan;
             cellImage.dataset.col = 'image_url';
             cellImage.dataset.label = 'Image';
-                    const imageUrl = review.image_url && review.image_url.trim() !== '' ? review.image_url : `/assets/${review.id}.webp`;
+                            const imageUrl = '/assets/default.png'; // Always use default since specific images are missing
             
             // Create mobile-friendly layout with image and details
-                    const imageElement = `<img src="${imageUrl}" class="review-image" alt="${review.brand} ${review.model}" onerror="this.onerror=null;this.src='/assets/default.png';">`;
+                    const imageElement = `<img src="${imageUrl}" class="review-image" alt="${review.brand} ${review.model}" >`;
             
             // Create the mobile layout with image and details section
             let mobileLayout = '<div class="mobile-image-section">';
