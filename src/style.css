@@ -188,6 +188,10 @@ table tbody tr:hover {
     display: none;
 }
 
+#clasp-codes-table td[data-col="variations"] {
+    display: none;
+}
+
 /* Tooltip Styles */
 .tooltip {
     position: relative;

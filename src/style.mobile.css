@@ -90,6 +90,92 @@ html {
         word-break: break-all;
     }
 
+    /* === Specific adjustments for the clasp codes table === */
+    #clasp-codes-table td[data-label="Factory"],
+    #clasp-codes-table td[data-label="Serial Number"],
+    #clasp-codes-table td[data-label="Clasp Code"] {
+        display: none;
+    }
+
+    #clasp-codes-table td[data-col="variations"] {
+        display: block;
+        padding: 0 !important;
+    }
+
+    #clasp-codes-table td[data-col="variations"]::before {
+        display: none;
+    }
+
+    .mobile-variations {
+        display: block;
+    }
+
+    .variations-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 0;
+        box-shadow: none;
+        border: 1px solid var(--border-color);
+        border-radius: 4px;
+        overflow: hidden;
+    }
+
+    #clasp-codes-table .variations-table thead {
+        display: table-header-group;
+    }
+
+    #clasp-codes-table .variations-table tr {
+         display: table-row;
+    }
+
+    #clasp-codes-table .variations-table th,
+    #clasp-codes-table .variations-table td {
+        display: table-cell;
+        padding: 8px 12px;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    #clasp-codes-table .variations-table tr:last-child td {
+        border-bottom: none;
+    }
+
+    #clasp-codes-table .variations-table th {
+        background-color: #f8f9fa;
+        font-weight: 600;
+        font-size: 11px;
+        color: var(--primary-color);
+        text-align: left;
+    }
+
+    #clasp-codes-table .variations-table td {
+        font-size: 12px;
+        background: white;
+        text-align: left !important;
+        white-space: pre-wrap;
+        vertical-align: top;
+    }
+
+    #clasp-codes-table .variations-table th:nth-child(1),
+    #clasp-codes-table .variations-table td:nth-child(1) {
+        width: 20%;
+    }
+
+    #clasp-codes-table .variations-table th:nth-child(2),
+    #clasp-codes-table .variations-table td:nth-child(2) {
+        width: 50%;
+    }
+
+    #clasp-codes-table .variations-table th:nth-child(3),
+    #clasp-codes-table .variations-table td:nth-child(3) {
+        width: 30%;
+    }
+
+    #clasp-codes-table .variations-table td {
+        text-align: left !important;
+        white-space: pre-wrap;
+        vertical-align: top;
+    }
+
     /* === Specific adjustments for the reviews table === */
 
     /* Create a special layout for the image cell that includes brand, model, reference */
@@ -243,7 +329,16 @@ html {
     }
 
     /* Hide additional desktop variation rows on mobile to prevent extra lines */
-    #reviews-table tr.desktop-only-variation {
+    #reviews-table tr.desktop-only-variation,
+    #clasp-codes-table tr.desktop-only-variation {
         display: none !important;
+    }
+
+    #clasp-codes-table .desktop-details {
+        display: none;
+    }
+
+    #clasp-codes-table .mobile-details-container {
+        display: block;
     }
 }
