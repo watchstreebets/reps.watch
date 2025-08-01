@@ -92,7 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
             cellImage.rowSpan = rowspan;
             cellImage.dataset.col = 'image_url';
             cellImage.dataset.label = 'Image';
-                            const imageUrl = '/assets/default.png'; // Always use default since specific images are missing
+            const imageUrl = group.find(r => r.image_url && r.image_url.trim() !== '')?.image_url || '/assets/default.png';
             
             // Create mobile-friendly layout with image and details
                     const imageElement = `<img src="${imageUrl}" class="review-image" alt="${review.brand} ${review.model}" >`;
