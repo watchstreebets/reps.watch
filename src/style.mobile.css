@@ -263,7 +263,7 @@ html {
     #reviews-table .mobile-details .mobile-variations td {
         display: table-cell !important;
         border: 1px solid var(--border-color);
-        padding: 6px 8px !important;
+        padding: 4px 6px !important; /* Reduced padding */
         text-align: left !important;
         vertical-align: top !important;
         flex-direction: row !important;
@@ -277,13 +277,13 @@ html {
     #reviews-table .mobile-details .mobile-variations th {
         background-color: #f8f9fa !important;
         font-weight: 600 !important;
-        font-size: 11px !important;
+        font-size: 10px !important; /* Reduced font size */
         color: var(--primary-color) !important;
     }
 
     #reviews-table .mobile-details .mobile-variations td {
         word-break: break-word;
-        font-size: 12px !important;
+        font-size: 11px !important; /* Reduced font size */
         background: white !important;
     }
 
@@ -324,7 +324,11 @@ html {
     #reviews-table td[data-col="version"],
     #reviews-table td[data-col="movement"],
     #reviews-table td[data-col="rating"],
-    #reviews-table td[data-col="notes"] {
+    #reviews-table td[data-col="notes"],
+    #reviews-table td[data-col="market_price (USD)"],
+    #reviews-table td[data-col="case_size (mm)"],
+    #reviews-table td[data-col="thickness (mm)"],
+    #reviews-table td[data-col="complications"] {
         display: none !important;
     }
 

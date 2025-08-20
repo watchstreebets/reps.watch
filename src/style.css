@@ -90,7 +90,7 @@ table {
 
 table th, table td {
     border: 1px solid var(--border-color);
-    padding: 12px 15px;
+    padding: 12px 10px; /* Reduced horizontal padding */
     text-align: left;
     vertical-align: middle;
 }
@@ -101,6 +101,20 @@ table thead {
 
 table th {
     font-weight: 600;
+    text-align: center;
+}
+
+table thead tr:first-child th {
+    background-color: var(--primary-color);
+    color: white;
+    font-weight: bold;
+    border-bottom: 1px solid var(--border-color);
+}
+
+table thead tr:nth-child(2) th {
+    background-color: #e5e5e5;
+    color: var(--text-color);
+    font-weight: 500;
 }
 
 table tbody tr:nth-child(even) {
@@ -109,6 +123,43 @@ table tbody tr:nth-child(even) {
 
 table tbody tr:hover {
     background-color: #f1f1f1;
+}
+
+/* --- Variation Grouping Styles (Desktop) --- */
+
+/* Add a top border to the first row of a new group to visually separate products */
+tr:not(.variation-row) {
+    border-top: 2px solid var(--primary-color);
+}
+
+/* Remove the top border for the very first row in the table body */
+table tbody tr:first-child {
+    border-top: none;
+}
+
+/* For subsequent rows in a group, hide the content of shared cells */
+.variation-row td[data-col="image_url"] > *,
+.variation-row td[data-col="brand"],
+.variation-row td[data-col="model"],
+.variation-row td[data-col="reference_number"],
+.variation-row td[data-col="market_price"],
+.variation-row td[data-col="case_size"],
+.variation-row td[data-col="thickness"],
+.variation-row td[data-col="complications"] {
+    visibility: hidden; /* Hides content but keeps space */
+}
+
+/* Also remove the borders from these now-empty cells to complete the illusion */
+.variation-row td[data-col="image_url"],
+.variation-row td[data-col="brand"],
+.variation-row td[data-col="model"],
+.variation-row td[data-col="reference_number"],
+.variation-row td[data-col="market_price"],
+.variation-row td[data-col="case_size"],
+.variation-row td[data-col="thickness"],
+.variation-row td[data-col="complications"] {
+    border-top-color: transparent;
+    border-bottom-color: transparent;
 }
 
 /* Reviews Page Specific */
@@ -124,15 +175,38 @@ table tbody tr:hover {
     display: flex;
     flex-wrap: wrap;
     gap: 1rem;
-    justify-content: center;
+    align-items: center; /* Align items vertically */
+    justify-content: flex-start; /* Align to the start */
     margin-bottom: 1rem;
 }
 
+.filters > * {
+    flex: 1 1 150px; /* Allow items to grow and shrink */
+    min-width: 120px; /* Minimum width for inputs */
+}
+
 .filters input, .filters select {
+    width: 100%; /* Make inputs fill the flex container */
     padding: 8px 12px;
     border: 1px solid var(--border-color);
     border-radius: 4px;
     font-size: 14px;
+}
+
+#reviews-table td[data-col="market_price (USD)"],
+#reviews-table th[data-col="market_price (USD)"],
+#reviews-table td[data-col="case_size (mm)"],
+#reviews-table th[data-col="case_size (mm)"],
+#reviews-table td[data-col="thickness (mm)"],
+#reviews-table th[data-col="thickness (mm)"] {
+    text-align: right;
+}
+
+#reviews-table td[data-col="complications"] {
+    white-space: pre-wrap;
+    word-break: break-word;
+    max-width: 150px; /* Constrain width */
+    min-width: 100px;
 }
 
 .edit-controls {
@@ -180,12 +254,17 @@ table tbody tr:hover {
 }
 
 /* Hide mobile-specific elements on desktop */
-.mobile-details {
-    display: none;
+.desktop-image-wrapper {
+    display: block; /* Show on desktop */
 }
 
-.mobile-variations {
-    display: none;
+.mobile-details,
+.mobile-variations,
+.mobile-group-header,
+.mobile-genuine-data,
+.mobile-replica-data,
+.mobile-variations-container {
+    display: none; /* Hide on desktop */
 }
 
 #clasp-codes-table td[data-col="variations"] {
@@ -273,6 +352,13 @@ table tbody tr:hover {
         box-shadow: 0 2px 4px rgba(0,0,0,0.05);
     }
 
+    /* Remove margin from variation rows to prevent extra spacing */
+    table tr.variation-row {
+        margin-bottom: 0;
+        margin-top: 0;
+        display: none; /* Hide variation rows on mobile since they're shown in the table */
+    }
+
     table td {
         display: flex;
         justify-content: space-between; /* Pushes label and value to opposite ends */
@@ -306,25 +392,236 @@ table tbody tr:hover {
         word-break: break-all;
     }
 
+    .desktop-image-wrapper {
+        display: none; /* Hide on mobile */
+    }
+
     /* Specific adjustments for the reviews table */
     #reviews-table td[data-col="image_url"] {
-        padding: 10px;
-        justify-content: center;
+        display: block; /* Override flex to allow block children */
+        padding: 0;
+        border: none;
     }
 
     #reviews-table td[data-col="image_url"]::before {
         display: none;
     }
 
-    .review-image {
-        width: 120px;
-        height: 120px;
+    .mobile-group-header {
+        display: block;
+        background-color: var(--primary-color);
+        color: white;
+        padding: 8px 15px;
+        font-weight: bold;
+        text-align: center;
+        border-radius: 8px 8px 0 0;
+        margin: 0;
     }
 
-    /* Hide redundant columns on mobile */
+    .mobile-genuine-data, .mobile-replica-data {
+        display: block;
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        margin-bottom: 0;
+        overflow: hidden;
+        background-color: var(--surface-color);
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .mobile-replica-data {
+        border-top: none;
+        border-radius: 0 0 8px 8px;
+        margin-bottom: 0;
+        margin-top: 0;
+    }
+
+    .mobile-genuine-data {
+        border-radius: 8px 8px 0 0;
+        margin-bottom: 0;
+    }
+
+    .mobile-image-section {
+        display: flex;
+        padding: 15px; /* Keep padding for content inside */
+        gap: 15px;
+        align-items: flex-start;
+    }
+
+    .mobile-variations-container {
+        padding: 0;
+        border: none;
+        border-radius: 0;
+        overflow: hidden;
+        margin: 0;
+        width: 100%;
+    }
+
+    .mobile-details {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        gap: 5px;
+    }
+
+    .detail-item {
+        display: flex;
+        justify-content: space-between;
+        font-size: 14px;
+    }
+
+    .detail-label {
+        font-weight: 600;
+        color: var(--primary-color);
+    }
+
+    .review-image {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+        border-radius: 4px;
+    }
+
+    .mobile-variations-container {
+        display: block;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+    }
+
+    .mobile-variations {
+        display: table;
+        width: 100%;
+        border-collapse: collapse;
+        margin: 0;
+        table-layout: auto;
+        border-spacing: 0;
+        box-sizing: border-box;
+    }
+
+    .mobile-variations thead {
+        display: table-header-group;
+    }
+
+    .mobile-variations th {
+        display: table-cell;
+        padding: 6px 8px;
+        background-color: #f8f9fa;
+        border-right: 1px solid var(--border-color);
+        border-bottom: 1px solid var(--border-color);
+        text-align: left;
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--primary-color);
+        vertical-align: middle;
+        line-height: 1.2;
+    }
+
+    .mobile-variations th:first-child {
+        border-left: none;
+    }
+
+    .mobile-variations th:last-child {
+        border-right: none;
+    }
+
+    .mobile-variations td {
+        display: table-cell;
+        padding: 6px 8px;
+        border-right: 1px solid var(--border-color);
+        border-bottom: 1px solid var(--border-color);
+        text-align: left;
+        font-size: 12px;
+        background-color: inherit;
+        vertical-align: middle;
+        line-height: 1;
+        margin: 0;
+    }
+
+    .mobile-variations td:first-child {
+        border-left: none;
+    }
+
+    .mobile-variations td:last-child {
+        border-right: none;
+    }
+
+    .mobile-variations tbody tr:last-child td {
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .mobile-variations tr {
+        display: table-row;
+        margin: 0;
+        padding: 0;
+    }
+
+    .mobile-variations tbody {
+        display: table-row-group;
+    }
+
+
+    /* Ensure proper column alignment with responsive widths */
+    .mobile-variations th:nth-child(1), .mobile-variations td:nth-child(1) { 
+        text-align: center;
+        min-width: 60px;
+    } /* Factory */
+    .mobile-variations th:nth-child(2), .mobile-variations td:nth-child(2) { 
+        text-align: center;
+        min-width: 50px;
+    } /* Version */
+    .mobile-variations th:nth-child(3), .mobile-variations td:nth-child(3) { 
+        text-align: center;
+        min-width: 80px;
+    } /* Movement */
+    .mobile-variations th:nth-child(4), .mobile-variations td:nth-child(4) { 
+        text-align: center;
+        font-weight: bold;
+        min-width: 50px;
+    } /* Rating */
+    .mobile-variations th:nth-child(5), .mobile-variations td:nth-child(5) { 
+        text-align: left;
+        min-width: 100px;
+    } /* Notes */
+
+    /* Hide desktop-specific elements on mobile */
+    .desktop-image-wrapper {
+        display: none;
+    }
+
+    /* Show mobile-specific elements */
+    .mobile-details,
+    .mobile-variations,
+    .mobile-group-header,
+    .mobile-genuine-data,
+    .mobile-replica-data,
+    .mobile-variations-container {
+        display: block;
+    }
+
+    /* Hide all individual table cells on mobile since we show everything in the image cell */
     #reviews-table td[data-col="brand"],
     #reviews-table td[data-col="model"],
-    #reviews-table td[data-col="reference_number"] {
+    #reviews-table td[data-col="reference_number"],
+    #reviews-table td[data-col="market_price"],
+    #reviews-table td[data-col="case_size"],
+    #reviews-table td[data-col="thickness"],
+    #reviews-table td[data-col="complications"],
+    #reviews-table td[data-col="factory"],
+    #reviews-table td[data-col="version"],
+    #reviews-table td[data-col="movement"],
+    #reviews-table td[data-col="rating"],
+    #reviews-table td[data-col="notes"] {
+        display: none;
+    }
+
+    /* Only show the image cell which contains all the mobile layout */
+    #reviews-table td[data-col="image_url"] {
+        display: block;
+        padding: 0;
+        border: none;
+    }
+
+    #reviews-table td[data-col="image_url"]::before {
         display: none;
     }
 }

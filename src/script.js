@@ -1,7 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
     const tableBody = document.getElementById('reviews-body');
-    const saveButton = document.getElementById('save-button');
-    const editModeToggle = document.getElementById('edit-mode-toggle');
     const sortableHeaders = document.querySelectorAll('.sortable');
     const searchInput = document.getElementById('searchInput');
     const brandFilter = document.getElementById('brandFilter');
@@ -9,6 +7,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const factoryFilter = document.getElementById('factoryFilter');
     const movementFilter = document.getElementById('movementFilter');
     const ratingFilter = document.getElementById('ratingFilter');
+    const maxPriceFilter = document.getElementById('maxPriceFilter');
+    const maxSizeFilter = document.getElementById('maxSizeFilter');
+    const maxThicknessFilter = document.getElementById('maxThicknessFilter');
+    const complicationsFilter = document.getElementById('complicationsFilter');
     const clearFiltersButton = document.getElementById('clearFiltersButton');
 
     let allReviews = [];
@@ -30,27 +32,37 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Fetch and parse CSV data
-    fetch('data/reviews.csv')
+    const fetchReviews = fetch('data/reviews.csv')
         .then(response => response.text())
         .then(csvText => {
-            Papa.parse(csvText, {
-                header: true,
-                skipEmptyLines: true,
-                complete: (results) => {
-                    allReviews = results.data.map(row => ({
-                        ...row,
-                        rating: parseFloat(row.rating) || 0,
-                        id: row.id || generateUUID()
-                    }));
-                    defaultSortAndRender();
-                    populateFilters(allReviews);
-                }
+            return new Promise(resolve => {
+                Papa.parse(csvText, {
+                    header: true,
+                    skipEmptyLines: true,
+                    complete: (results) => {
+                        allReviews = results.data.map(row => ({
+                            ...row,
+                            rating: parseFloat(row.rating) || 0,
+                            market_price: parseFloat(row.market_price) || null,
+                            case_size: parseFloat(row.case_size) || null,
+                            thickness: parseFloat(row.thickness) || null,
+                            id: row.id || generateUUID()
+                        }));
+                        resolve();
+                    }
+                });
             });
+        });
+
+
+    Promise.all([fetchReviews])
+        .then(() => {
+            defaultSortAndRender();
+            populateFilters(allReviews);
         })
         .catch(error => {
-            console.error('Could not load or parse reviews.csv:', error);
-            tableBody.innerHTML = '<tr><td colspan="8">Could not load reviews.</td></tr>';
+            console.error('Could not load or parse CSV data:', error);
+            tableBody.innerHTML = '<tr><td colspan="9">Could not load data.</td></tr>';
         });
 
     function defaultSortAndRender() {
@@ -79,47 +91,70 @@ document.addEventListener('DOMContentLoaded', () => {
 
         for (const key in groupedReviews) {
             const group = groupedReviews[key];
+            const sharedData = {
+                image_url: group.find(r => r.image_url && r.image_url.trim() !== '')?.image_url || '/assets/default.png',
+                brand: group[0].brand,
+                model: group[0].model,
+                reference_number: group[0].reference_number,
+                market_price: group.find(r => r.market_price != null && r.market_price !== '')?.market_price || '',
+                case_size: group.find(r => r.case_size != null && r.case_size !== '')?.case_size || '',
+                thickness: group.find(r => r.thickness != null && r.thickness !== '')?.thickness || '',
+                complications: group.find(r => r.complications != null && r.complications !== '')?.complications || ''
+            };
+
+            // Create the first row with rowspan for shared columns
+            const firstRow = document.createElement('tr');
+            firstRow.dataset.key = `${group[0].id}|${group[0].factory}|${group[0].version}`;
             
-            // Create only one row per product group (consolidate all variations on mobile)
-            const row = document.createElement('tr');
-            row.dataset.key = key; // Use the product key instead of individual variation key
+            // Image cell with rowspan
+            const imageCell = document.createElement('td');
+            imageCell.rowSpan = group.length;
+            imageCell.dataset.col = 'image_url';
+            imageCell.dataset.label = 'Image';
             
-            // Always create the consolidated layout (mobile will show variations table, desktop will show first item)
-            const review = group[0]; // Use first review for basic product info
-            const rowspan = group.length; // Always span all variations for desktop
-            // Image cell with mobile details
-            const cellImage = document.createElement('td');
-            cellImage.rowSpan = rowspan;
-            cellImage.dataset.col = 'image_url';
-            cellImage.dataset.label = 'Image';
-            const imageUrl = group.find(r => r.image_url && r.image_url.trim() !== '')?.image_url || '/assets/default.png';
+            // Desktop image wrapper
+            const desktopImageWrapper = document.createElement('div');
+            desktopImageWrapper.className = 'desktop-image-wrapper';
+            desktopImageWrapper.innerHTML = `<img src="${sharedData.image_url}" class="review-image" alt="${sharedData.brand} ${sharedData.model}">`;
             
-            // Create mobile-friendly layout with image and details
-                    const imageElement = `<img src="${imageUrl}" class="review-image" alt="${review.brand} ${review.model}" >`;
+            // Mobile layout sections
+            const mobileGenuineData = document.createElement('div');
+            mobileGenuineData.className = 'mobile-genuine-data';
+            mobileGenuineData.innerHTML = `
+                <div class="mobile-group-header">Genuine Watch Data</div>
+                <div class="mobile-image-section">
+                    <img src="${sharedData.image_url}" class="review-image" alt="${sharedData.brand} ${sharedData.model}">
+                    <div class="mobile-details">
+                        ${sharedData.brand ? `<div class="detail-item"><span class="detail-label">Brand:</span><span class="detail-value">${sharedData.brand}</span></div>` : ''}
+                        ${sharedData.model ? `<div class="detail-item"><span class="detail-label">Model:</span><span class="detail-value">${sharedData.model}</span></div>` : ''}
+                        ${sharedData.reference_number ? `<div class="detail-item"><span class="detail-label">Reference:</span><span class="detail-value">${sharedData.reference_number}</span></div>` : ''}
+                        ${sharedData.market_price ? `<div class="detail-item"><span class="detail-label">Price:</span><span class="detail-value">$${sharedData.market_price}</span></div>` : ''}
+                        ${sharedData.case_size ? `<div class="detail-item"><span class="detail-label">Size:</span><span class="detail-value">${sharedData.case_size}mm</span></div>` : ''}
+                        ${sharedData.thickness ? `<div class="detail-item"><span class="detail-label">Thickness:</span><span class="detail-value">${sharedData.thickness}mm</span></div>` : ''}
+                        ${sharedData.complications ? `<div class="detail-item"><span class="detail-label">Complications:</span><span class="detail-value">${sharedData.complications}</span></div>` : ''}
+                    </div>
+                </div>
+            `;
             
-            // Create the mobile layout with image and details section
-            let mobileLayout = '<div class="mobile-image-section">';
-            mobileLayout += imageElement;
+            // Mobile replica data section
+            const mobileReplicaData = document.createElement('div');
+            mobileReplicaData.className = 'mobile-replica-data';
+            let variationsTableHTML = `
+                <div class="mobile-group-header">Replica Details</div>
+                <div class="mobile-variations-container">
+                    <table class="mobile-variations">
+                        <thead>
+                            <tr>
+                                <th>Factory</th>
+                                <th>Version</th>
+                                <th>Movement</th>
+                                <th>Rating</th>
+                                <th>Notes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
             
-            mobileLayout += '<div class="mobile-details">';
-            if (review.brand && review.brand.trim()) {
-                mobileLayout += `<div class="detail-item"><span class="detail-label">Brand:</span><span class="detail-value">${review.brand}</span></div>`;
-            }
-            if (review.model && review.model.trim()) {
-                mobileLayout += `<div class="detail-item"><span class="detail-label">Model:</span><span class="detail-value">${review.model}</span></div>`;
-            }
-            if (review.reference_number && review.reference_number.trim()) {
-                mobileLayout += `<div class="detail-item"><span class="detail-label">Reference:</span><span class="detail-value">${review.reference_number}</span></div>`;
-            }
-            mobileLayout += '</div>'; // Close mobile-details
-            mobileLayout += '</div>'; // Close mobile-image-section
-            
-            // Create variations table for all factory/version combinations
-            let variationsTable = '<table class="mobile-variations">';
-            variationsTable += '<thead><tr><th>Factory</th><th>Version</th><th>Movement</th><th>Rating</th><th>Notes</th></tr></thead>';
-            variationsTable += '<tbody>';
-            
-            // Add all variations for this product with color highlighting
             group.forEach(variation => {
                 let rowClass = '';
                 if (variation.rating >= 4.5) {
@@ -127,200 +162,96 @@ document.addEventListener('DOMContentLoaded', () => {
                 } else if (variation.rating >= 4.0) {
                     rowClass = ' class="highlight-green"';
                 }
-                
-                variationsTable += `<tr${rowClass}>`;
-                variationsTable += `<td>${variation.factory || ''}</td>`;
-                variationsTable += `<td>${variation.version || ''}</td>`;
-                variationsTable += `<td>${variation.movement || ''}</td>`;
-                variationsTable += `<td class="rating-cell">${variation.rating ? variation.rating.toFixed(1) : '0.0'}</td>`;
-                variationsTable += `<td>${variation.notes || ''}</td>`;
-                variationsTable += '</tr>';
+                variationsTableHTML += `
+                    <tr${rowClass}>
+                        <td>${variation.factory || ''}</td>
+                        <td>${variation.version || ''}</td>
+                        <td>${variation.movement || ''}</td>
+                        <td class="rating-cell">${variation.rating ? variation.rating.toFixed(1) : '0.0'}</td>
+                        <td>${variation.notes || ''}</td>
+                    </tr>
+                `;
             });
             
-            variationsTable += '</tbody></table>';
+            variationsTableHTML += `
+                        </tbody>
+                    </table>
+                </div>
+            `;
+            mobileReplicaData.innerHTML = variationsTableHTML;
             
-            // Combine everything into the final mobile layout
-            let finalMobileContent = mobileLayout + '<div class="mobile-details">' + variationsTable + '</div>';
-            
-            // Debug: log what we're generating
-            console.log('Final mobile content:', finalMobileContent);
-            console.log('Group data:', group);
-            
-            cellImage.innerHTML = finalMobileContent;
-            row.appendChild(cellImage);
+            imageCell.appendChild(desktopImageWrapper);
+            imageCell.appendChild(mobileGenuineData);
+            imageCell.appendChild(mobileReplicaData);
+            firstRow.appendChild(imageCell);
 
-            // Grouped cells (brand, model, reference)
-            ['brand', 'model', 'reference_number'].forEach(colName => {
+            // Shared data columns with rowspan
+            ['brand', 'model', 'reference_number', 'market_price', 'case_size', 'thickness', 'complications'].forEach(colName => {
                 const cell = document.createElement('td');
-                cell.rowSpan = rowspan;
+                cell.rowSpan = group.length;
                 cell.dataset.col = colName;
-                cell.dataset.label = colName.charAt(0).toUpperCase() + colName.slice(1).replace('_', ' ');
-                cell.textContent = review[colName];
-                row.appendChild(cell);
+                cell.dataset.label = colName.charAt(0).toUpperCase() + colName.slice(1).replace(/_/g, ' ');
+                
+                let displayValue = sharedData[colName] || '';
+                if (colName === 'market_price' && displayValue) displayValue = `$${displayValue}`;
+                cell.textContent = displayValue;
+                firstRow.appendChild(cell);
             });
-        
-            // Only create the first row (main product row)
-            const variation = group[0]; // Use first variation for the main row
-        
-            // Non-grouped cells (factory, version, movement, rating, notes)
+
+            // First variation columns
             ['factory', 'version', 'movement', 'rating', 'notes'].forEach(colName => {
                 const cell = document.createElement('td');
                 cell.dataset.col = colName;
                 cell.dataset.label = colName.charAt(0).toUpperCase() + colName.slice(1);
                 
-                const valueSpan = document.createElement('span');
-                if (colName === 'rating') {
-                    valueSpan.textContent = variation.rating ? variation.rating.toFixed(1) : '0.0';
-                } else {
-                    valueSpan.textContent = variation[colName] || '';
-                }
-                cell.appendChild(valueSpan);
-                row.appendChild(cell);
+                let displayValue = group[0][colName] || '';
+                if (colName === 'rating' && displayValue) displayValue = parseFloat(displayValue).toFixed(1);
+                cell.textContent = displayValue;
+                firstRow.appendChild(cell);
             });
 
-            highlightRow(row, variation.rating);
-            tableBody.appendChild(row);
-        
-            // For desktop: create additional rows for other variations (these will be hidden on mobile)
+            highlightRow(firstRow, group[0].rating);
+            tableBody.appendChild(firstRow);
+
+            // Additional variation rows
             for (let i = 1; i < group.length; i++) {
-                const additionalVariation = group[i];
-                const additionalRow = document.createElement('tr');
-                additionalRow.dataset.key = `${additionalVariation.id}|${additionalVariation.factory}|${additionalVariation.version}`;
-                additionalRow.classList.add('desktop-only-variation');
-                
-                // Non-grouped cells for additional variations
+                const variation = group[i];
+                const row = document.createElement('tr');
+                row.dataset.key = `${variation.id}|${variation.factory}|${variation.version}`;
+                row.classList.add('variation-row');
+
                 ['factory', 'version', 'movement', 'rating', 'notes'].forEach(colName => {
                     const cell = document.createElement('td');
                     cell.dataset.col = colName;
                     cell.dataset.label = colName.charAt(0).toUpperCase() + colName.slice(1);
                     
-                    const valueSpan = document.createElement('span');
-                    if (colName === 'rating') {
-                        valueSpan.textContent = additionalVariation.rating ? additionalVariation.rating.toFixed(1) : '0.0';
-                    } else {
-                        valueSpan.textContent = additionalVariation[colName] || '';
-                    }
-                    cell.appendChild(valueSpan);
-                    additionalRow.appendChild(cell);
+                    let displayValue = variation[colName] || '';
+                    if (colName === 'rating' && displayValue) displayValue = parseFloat(displayValue).toFixed(1);
+                    cell.textContent = displayValue;
+                    row.appendChild(cell);
                 });
 
-                highlightRow(additionalRow, additionalVariation.rating);
-                tableBody.appendChild(additionalRow);
+                highlightRow(row, variation.rating);
+                tableBody.appendChild(row);
             }
-        }
-
-        if (editModeToggle.checked) {
-            makeTableEditable();
         }
     }
 
     function highlightRow(row, rating) {
-        const cellsToHighlight = row.querySelectorAll('td:nth-last-child(-n+5)');
-        cellsToHighlight.forEach(cell => {
-            cell.classList.remove('highlight-gold', 'highlight-green');
-            if (rating >= 4.5) {
-                cell.classList.add('highlight-gold');
-            } else if (rating >= 4.0) {
-                cell.classList.add('highlight-green');
-            }
-        });
-    }
-
-    function findReviewByKey(key) {
-        if (!key) return null;
-        const [id, factory, version] = key.split('|');
-        return allReviews.find(r => r.id === id && r.factory === factory && r.version === version);
-    }
-
-    function makeTableEditable() {
-        const rows = tableBody.querySelectorAll('tr');
-        rows.forEach(row => {
-            // Make standard cells editable
-            row.querySelectorAll('td[data-col]').forEach(cell => {
-                if (['factory', 'version', 'movement', 'rating', 'notes'].includes(cell.dataset.col)) {
-                    cell.contentEditable = true;
-                    cell.classList.add('editable');
-                }
-            });
-
-            // Handle the image cell specifically
-            const imageCell = row.querySelector('td[data-col="image_url"]');
-            if (imageCell) {
-                const key = row.dataset.key;
-                const review = findReviewByKey(key);
-                if (review) {
-                    const imageUrl = review.image_url || '';
-                    imageCell.innerHTML = `<input type="text" class="image-url-input" value="${imageUrl}" placeholder="Enter Image URL">`;
-                    imageCell.classList.add('editable');
+        const colsToHighlight = ['factory', 'version', 'movement', 'rating', 'notes'];
+        colsToHighlight.forEach(colName => {
+            const cell = row.querySelector(`td[data-col="${colName}"]`);
+            if (cell) {
+                cell.classList.remove('highlight-gold', 'highlight-green');
+                if (rating >= 4.5) {
+                    cell.classList.add('highlight-gold');
+                } else if (rating >= 4.0) {
+                    cell.classList.add('highlight-green');
                 }
             }
         });
     }
 
-    function disableTableEditing() {
-        const rows = tableBody.querySelectorAll('tr');
-        rows.forEach(row => {
-            const key = row.dataset.key;
-            const review = findReviewByKey(key);
-            if (!review) return;
-
-            // Make standard cells non-editable and save their content
-            row.querySelectorAll('td[data-col]').forEach(cell => {
-                const colName = cell.dataset.col;
-                if (['factory', 'version', 'movement', 'rating', 'notes'].includes(colName)) {
-                    cell.contentEditable = false;
-                    cell.classList.remove('editable');
-                    
-                    let newValue = cell.textContent.trim();
-                    if (colName === 'rating') {
-                        const parsedValue = parseFloat(newValue);
-                        newValue = isNaN(parsedValue) ? 0 : parsedValue;
-                    }
-                    review[colName] = newValue;
-                }
-            });
-
-            // Handle the image cell specifically
-            const imageCell = row.querySelector('td[data-col="image_url"]');
-            if (imageCell) {
-                const input = imageCell.querySelector('.image-url-input');
-                if (input) {
-                    const newUrl = input.value.trim();
-                    review.image_url = newUrl; // Update data model
-                    const displayUrl = newUrl ? newUrl : `assets/${review.id}.webp`;
-                    imageCell.innerHTML = `<img src="${displayUrl}" class="review-image" alt="${review.brand} ${review.model}" onerror="this.onerror=null;this.src='assets/default.png';">`;
-                }
-                imageCell.classList.remove('editable');
-            }
-            
-            // After updating data, re-apply highlighting
-            highlightRow(row, review.rating);
-        });
-    }
-
-    editModeToggle.addEventListener('change', () => {
-        saveButton.style.display = editModeToggle.checked ? 'block' : 'none';
-        if (editModeToggle.checked) {
-            makeTableEditable();
-        } else {
-            disableTableEditing(); // This now saves the data
-        }
-    });
-
-    saveButton.addEventListener('click', () => {
-        // The main save logic is now handled when disabling edit mode.
-        // This button will now just download the CSV.
-        const csv = Papa.unparse(allReviews, { header: true });
-        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'reviews.csv';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-    });
 
     sortableHeaders.forEach(header => {
         header.addEventListener('click', () => {
@@ -334,8 +265,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 const valA = a[sortKey];
                 const valB = b[sortKey];
 
-                if (sortKey === 'rating') {
-                    return direction === 'asc' ? (valA - valB) : (valB - valA);
+                const numericColumns = ['rating', 'market_price', 'case_size', 'thickness'];
+                if (numericColumns.includes(sortKey)) {
+                    return direction === 'asc' ? ((valA || 0) - (valB || 0)) : ((valB || 0) - (valA || 0));
                 }
                 if (String(valA).localeCompare(String(valB)) < 0) return direction === 'asc' ? -1 : 1;
                 if (String(valA).localeCompare(String(valB)) > 0) return direction === 'asc' ? 1 : -1;
@@ -364,7 +296,8 @@ document.addEventListener('DOMContentLoaded', () => {
             brand: new Set(),
             model: new Set(),
             factory: new Set(),
-            movement: new Set()
+            movement: new Set(),
+            complications: new Set()
         };
 
         reviews.forEach(review => {
@@ -372,12 +305,18 @@ document.addEventListener('DOMContentLoaded', () => {
             if (review.model) filters.model.add(review.model);
             if (review.factory) filters.factory.add(review.factory);
             if (review.movement) filters.movement.add(review.movement);
+            if (review.complications) {
+                review.complications.split(',').forEach(comp => {
+                    if (comp.trim()) filters.complications.add(comp.trim());
+                });
+            }
         });
 
         populateSelect(brandFilter, filters.brand);
         populateSelect(modelFilter, filters.model);
         populateSelect(factoryFilter, filters.factory);
         populateSelect(movementFilter, filters.movement);
+        populateSelect(complicationsFilter, filters.complications);
     }
 
     function populateSelect(selectElement, values) {
@@ -401,6 +340,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const factoryValue = factoryFilter.value;
         const movementValue = movementFilter.value;
         const ratingValue = parseFloat(ratingFilter.value) || 0;
+        const maxPriceValue = parseFloat(maxPriceFilter.value) || Infinity;
+        const maxSizeValue = parseFloat(maxSizeFilter.value) || Infinity;
+        const maxThicknessValue = parseFloat(maxThicknessFilter.value) || Infinity;
+        const complicationsValue = complicationsFilter.value;
 
         const filteredReviews = allReviews.filter(review => {
             const searchMatch = searchValue === '' ||
@@ -408,18 +351,27 @@ document.addEventListener('DOMContentLoaded', () => {
                     String(val).toLowerCase().includes(searchValue)
                 );
 
+            const priceMatch = review.market_price === null || review.market_price <= maxPriceValue;
+            const sizeMatch = review.case_size === null || review.case_size <= maxSizeValue;
+            const thicknessMatch = review.thickness === null || review.thickness <= maxThicknessValue;
+            const complicationsMatch = complicationsValue === '' || (review.complications && review.complications.toLowerCase().includes(complicationsValue.toLowerCase()));
+
             return searchMatch &&
                 (brandValue === '' || review.brand === brandValue) &&
                 (modelValue === '' || review.model === modelValue) &&
                 (factoryValue === '' || review.factory === factoryValue) &&
                 (movementValue === '' || review.movement === movementValue) &&
-                (review.rating >= ratingValue);
+                (review.rating >= ratingValue) &&
+                priceMatch &&
+                sizeMatch &&
+                thicknessMatch &&
+                complicationsMatch;
         });
 
         renderTable(filteredReviews);
     }
 
-    [searchInput, brandFilter, modelFilter, factoryFilter, movementFilter, ratingFilter].forEach(el => {
+    [searchInput, brandFilter, modelFilter, factoryFilter, movementFilter, ratingFilter, maxPriceFilter, maxSizeFilter, maxThicknessFilter, complicationsFilter].forEach(el => {
         el.addEventListener('input', applyFilters);
         if (el.tagName === 'SELECT') {
             el.addEventListener('change', applyFilters);
@@ -433,6 +385,10 @@ document.addEventListener('DOMContentLoaded', () => {
         factoryFilter.value = '';
         movementFilter.value = '';
         ratingFilter.value = '';
+        maxPriceFilter.value = '';
+        maxSizeFilter.value = '';
+        maxThicknessFilter.value = '';
+        complicationsFilter.value = '';
         applyFilters();
     });
 });

@@ -34,32 +34,38 @@
                 <select id="factoryFilter"><option value="">All Factories</option></select>
                 <select id="movementFilter"><option value="">All Movements</option></select>
                 <input type="number" id="ratingFilter" placeholder="Min Rating" step="0.1">
+                <input type="number" id="maxPriceFilter" placeholder="Max Price">
+                <input type="number" id="maxSizeFilter" placeholder="Max Size (mm)">
+                <input type="number" id="maxThicknessFilter" placeholder="Max Thickness (mm)">
+                <select id="complicationsFilter"><option value="">All Complications</option></select>
                 <button id="clearFiltersButton">Clear Filters</button>
-            </div>
-            <div class="edit-controls">
-                <label for="edit-mode-toggle">Edit Mode:</label>
-                <input type="checkbox" id="edit-mode-toggle">
-                <button id="save-button" style="display:none;">Save Changes</button>
             </div>
         </div>
 
         <table id="reviews-table">
             <thead>
                 <tr>
-                    <th>Image</th>
-                    <th class="sortable" data-sort="brand">Brand</th>
-                    <th class="sortable" data-sort="model">Model</th>
-                    <th class="sortable" data-sort="reference_number">Reference</th>
-                    <th class="sortable" data-sort="factory">Factory</th>
-                    <th class="sortable" data-sort="version">Version</th>
-                    <th class="sortable" data-sort="movement">Movement</th>
-                    <th class="sortable" data-sort="rating">Rating</th>
-                    <th class="sortable" data-sort="notes">Notes</th>
+                    <th rowspan="2">Image</th>
+                    <th colspan="7">Genuine Watch Data</th>
+                    <th colspan="5">Replica Details</th>
+                </tr>
+                <tr>
+                    <th class="sortable tooltip" data-sort="brand" data-tooltip="">Brand</th>
+                    <th class="sortable tooltip" data-sort="model" data-tooltip="">Model</th>
+                    <th class="sortable tooltip" data-sort="reference_number" data-tooltip="Reference number or model description">Reference</th>
+                    <th class="sortable tooltip" data-sort="market_price" data-tooltip="2025 market price for genuine watch">Price</th>
+                    <th class="sortable tooltip" data-sort="case_size" data-tooltip="Watch case diameter in millimeters">Size</th>
+                    <th class="sortable tooltip" data-sort="thickness" data-tooltip="Watch case thickness in millimeters">Thickness</th>
+                    <th class="sortable tooltip" data-sort="complications" data-tooltip="Additional functions beyond basic timekeeping">Complications</th>
+                    <th class="sortable tooltip" data-sort="factory" data-tooltip="Replica manufacturer factory code">Factory</th>
+                    <th class="sortable tooltip" data-sort="version" data-tooltip="Factory's version or batch of this replica">Version</th>
+                    <th class="sortable tooltip" data-sort="movement" data-tooltip="Type of movement mechanism used">Movement</th>
+                    <th class="sortable tooltip" data-sort="rating" data-tooltip="Quality rating from 1-5 stars">Rating</th>
+                    <th class="sortable tooltip" data-sort="notes" data-tooltip="Additional notes and observations">Notes</th>
                 </tr>
             </thead>
             <tbody id="reviews-body"></tbody>
         </table>
-
 
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
