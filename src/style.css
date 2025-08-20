@@ -86,6 +86,7 @@ table {
     box-shadow: 0 4px 8px rgba(0,0,0,0.05);
     border-radius: 8px;
     overflow: hidden;
+    font-size: 12px;
 }
 
 table th, table td {
