@@ -116,7 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Desktop image wrapper
             const desktopImageWrapper = document.createElement('div');
             desktopImageWrapper.className = 'desktop-image-wrapper';
-            desktopImageWrapper.innerHTML = `<img src="${sharedData.image_url}" class="review-image" alt="${sharedData.brand} ${sharedData.model}">`;
+            desktopImageWrapper.innerHTML = `<img src="${sharedData.image_url}" class="review-image" alt="${sharedData.brand} ${sharedData.model}" loading="lazy">`;
             
             // Mobile layout sections
             const mobileGenuineData = document.createElement('div');
@@ -124,7 +124,7 @@ document.addEventListener('DOMContentLoaded', () => {
             mobileGenuineData.innerHTML = `
                 <div class="mobile-group-header">Genuine Watch Data</div>
                 <div class="mobile-image-section">
-                    <img src="${sharedData.image_url}" class="review-image" alt="${sharedData.brand} ${sharedData.model}">
+                    <img src="${sharedData.image_url}" class="review-image" alt="${sharedData.brand} ${sharedData.model}" loading="lazy">
                     <div class="mobile-details">
                         ${sharedData.brand ? `<div class="detail-item"><span class="detail-label">Brand:</span><span class="detail-value">${sharedData.brand}</span></div>` : ''}
                         ${sharedData.model ? `<div class="detail-item"><span class="detail-label">Model:</span><span class="detail-value">${sharedData.model}</span></div>` : ''}
@@ -498,4 +498,38 @@ document.addEventListener('DOMContentLoaded', () => {
         fullImg.alt = img.alt || 'Full size image';
         overlay.classList.add('visible');
     });
+
+    // -------------------------------
+    // Back-to-Top Button (lazy created)
+    // -------------------------------
+    function ensureBackToTop() {
+        let btn = document.getElementById('back-to-top');
+        if (!btn) {
+            btn = document.createElement('button');
+            btn.id = 'back-to-top';
+            btn.title = 'Back to top';
+            btn.setAttribute('aria-label', 'Back to top');
+            btn.textContent = '↑';
+            document.body.appendChild(btn);
+
+            btn.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        }
+        return btn;
+    }
+
+    function updateBackToTopVisibility() {
+        const btn = ensureBackToTop();
+        const scrolled = window.pageYOffset || document.documentElement.scrollTop;
+        if (scrolled > 400) {
+            btn.classList.add('visible');
+        } else {
+            btn.classList.remove('visible');
+        }
+    }
+
+    // Initial check and on scroll
+    updateBackToTopVisibility();
+    window.addEventListener('scroll', updateBackToTopVisibility, { passive: true });
 });
