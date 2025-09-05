@@ -460,12 +460,20 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!overlay) {
             overlay = document.createElement('div');
             overlay.id = 'image-lightbox-overlay';
-            overlay.innerHTML = '<img id="image-lightbox-img" alt="Full size image">';
+            overlay.innerHTML = '<button id="image-lightbox-close" aria-label="Close image">×</button><img id="image-lightbox-img" alt="Full size image">';
             document.body.appendChild(overlay);
 
             // Close when clicking outside the image
             overlay.addEventListener('click', (e) => {
                 if (e.target === overlay) {
+                    overlay.classList.remove('visible');
+                }
+            });
+
+            // Close when clicking the X button
+            overlay.addEventListener('click', (e) => {
+                const btn = e.target.closest('#image-lightbox-close');
+                if (btn) {
                     overlay.classList.remove('visible');
                 }
             });

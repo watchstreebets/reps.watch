@@ -246,6 +246,28 @@ table tbody tr:first-child {
     border-radius: 8px;
 }
 
+#image-lightbox-close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,0.6);
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    font-size: 20px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+#image-lightbox-close:hover {
+    background: rgba(0,0,0,0.8);
+}
+
 .group-start td {
     border-top: 2px solid var(--primary-color);
 }
