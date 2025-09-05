@@ -59,6 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(() => {
             defaultSortAndRender();
             populateFilters(allReviews);
+            updateFilterOptions();
         })
         .catch(error => {
             console.error('Could not load or parse CSV data:', error);
@@ -324,49 +325,108 @@ document.addEventListener('DOMContentLoaded', () => {
         while (selectElement.options.length > 1) {
             selectElement.remove(1);
         }
-        Array.from(values).sort().forEach(value => {
+        const sortedValues = Array.from(values).sort();
+        sortedValues.forEach(value => {
             const option = document.createElement('option');
             option.value = value;
             option.textContent = value;
             selectElement.appendChild(option);
         });
-        selectElement.value = currentValue;
+        // Preserve selection if it still exists; otherwise clear it
+        if (currentValue && sortedValues.includes(currentValue)) {
+            selectElement.value = currentValue;
+        } else {
+            selectElement.value = '';
+        }
+    }
+
+    // Build an object representing current active filters/inputs
+    function getActiveFilters() {
+        return {
+            search: (searchInput.value || '').toLowerCase(),
+            brand: brandFilter.value,
+            model: modelFilter.value,
+            factory: factoryFilter.value,
+            movement: movementFilter.value,
+            rating: parseFloat(ratingFilter.value) || 0,
+            maxPrice: parseFloat(maxPriceFilter.value) || Infinity,
+            maxSize: parseFloat(maxSizeFilter.value) || Infinity,
+            maxThickness: parseFloat(maxThicknessFilter.value) || Infinity,
+            complications: complicationsFilter.value
+        };
+    }
+
+    // Check if a review matches the provided filters. Optionally exclude one key when
+    // computing available options for that particular filter.
+    function reviewMatchesFilters(review, filters, excludeKey = null) {
+        const exclude = (key) => excludeKey === key;
+
+        // Text search across all values
+        if (!exclude('search')) {
+            const search = filters.search;
+            const searchMatch = search === '' || Object.values(review).some(val => String(val).toLowerCase().includes(search));
+            if (!searchMatch) return false;
+        }
+
+        if (!exclude('brand') && filters.brand && review.brand !== filters.brand) return false;
+        if (!exclude('model') && filters.model && review.model !== filters.model) return false;
+        if (!exclude('factory') && filters.factory && review.factory !== filters.factory) return false;
+        if (!exclude('movement') && filters.movement && review.movement !== filters.movement) return false;
+
+        if (!exclude('rating') && review.rating < filters.rating) return false;
+
+        if (!exclude('maxPrice')) {
+            if (!(review.market_price === null || review.market_price <= filters.maxPrice)) return false;
+        }
+        if (!exclude('maxSize')) {
+            if (!(review.case_size === null || review.case_size <= filters.maxSize)) return false;
+        }
+        if (!exclude('maxThickness')) {
+            if (!(review.thickness === null || review.thickness <= filters.maxThickness)) return false;
+        }
+
+        if (!exclude('complications') && filters.complications) {
+            const compStr = (review.complications || '').toLowerCase();
+            if (!compStr.includes(filters.complications.toLowerCase())) return false;
+        }
+
+        return true;
+    }
+
+    // Update each dropdown's options based on other active filters
+    function updateFilterOptions() {
+        const filters = getActiveFilters();
+
+        // For each select, compute available values from reviews that match all other filters
+        const computeSet = (key) => {
+            const subset = allReviews.filter(r => reviewMatchesFilters(r, filters, key));
+            const set = new Set();
+            if (key === 'complications') {
+                subset.forEach(r => {
+                    if (r.complications) {
+                        r.complications.split(',').forEach(c => { const v = c.trim(); if (v) set.add(v); });
+                    }
+                });
+            } else {
+                subset.forEach(r => { if (r[key]) set.add(r[key]); });
+            }
+            return set;
+        };
+
+        populateSelect(brandFilter, computeSet('brand'));
+        populateSelect(modelFilter, computeSet('model'));
+        populateSelect(factoryFilter, computeSet('factory'));
+        populateSelect(movementFilter, computeSet('movement'));
+        populateSelect(complicationsFilter, computeSet('complications'));
     }
 
     function applyFilters() {
-        const searchValue = searchInput.value.toLowerCase();
-        const brandValue = brandFilter.value;
-        const modelValue = modelFilter.value;
-        const factoryValue = factoryFilter.value;
-        const movementValue = movementFilter.value;
-        const ratingValue = parseFloat(ratingFilter.value) || 0;
-        const maxPriceValue = parseFloat(maxPriceFilter.value) || Infinity;
-        const maxSizeValue = parseFloat(maxSizeFilter.value) || Infinity;
-        const maxThicknessValue = parseFloat(maxThicknessFilter.value) || Infinity;
-        const complicationsValue = complicationsFilter.value;
+        const filters = getActiveFilters();
 
-        const filteredReviews = allReviews.filter(review => {
-            const searchMatch = searchValue === '' ||
-                Object.values(review).some(val =>
-                    String(val).toLowerCase().includes(searchValue)
-                );
+        const filteredReviews = allReviews.filter(review => reviewMatchesFilters(review, filters));
 
-            const priceMatch = review.market_price === null || review.market_price <= maxPriceValue;
-            const sizeMatch = review.case_size === null || review.case_size <= maxSizeValue;
-            const thicknessMatch = review.thickness === null || review.thickness <= maxThicknessValue;
-            const complicationsMatch = complicationsValue === '' || (review.complications && review.complications.toLowerCase().includes(complicationsValue.toLowerCase()));
-
-            return searchMatch &&
-                (brandValue === '' || review.brand === brandValue) &&
-                (modelValue === '' || review.model === modelValue) &&
-                (factoryValue === '' || review.factory === factoryValue) &&
-                (movementValue === '' || review.movement === movementValue) &&
-                (review.rating >= ratingValue) &&
-                priceMatch &&
-                sizeMatch &&
-                thicknessMatch &&
-                complicationsMatch;
-        });
+        // Update available options to reflect current constraints
+        updateFilterOptions();
 
         renderTable(filteredReviews);
     }
