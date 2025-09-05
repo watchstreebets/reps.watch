@@ -451,4 +451,43 @@ document.addEventListener('DOMContentLoaded', () => {
         complicationsFilter.value = '';
         applyFilters();
     });
+
+    // -------------------------------
+    // Lightweight Image Lightbox
+    // -------------------------------
+    function ensureLightbox() {
+        let overlay = document.getElementById('image-lightbox-overlay');
+        if (!overlay) {
+            overlay = document.createElement('div');
+            overlay.id = 'image-lightbox-overlay';
+            overlay.innerHTML = '<img id="image-lightbox-img" alt="Full size image">';
+            document.body.appendChild(overlay);
+
+            // Close when clicking outside the image
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) {
+                    overlay.classList.remove('visible');
+                }
+            });
+
+            // Close on Escape
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    overlay.classList.remove('visible');
+                }
+            });
+        }
+        return overlay;
+    }
+
+    // Delegate clicks on any review image
+    document.addEventListener('click', (e) => {
+        const img = e.target.closest('.review-image');
+        if (!img) return;
+        const overlay = ensureLightbox();
+        const fullImg = overlay.querySelector('#image-lightbox-img');
+        fullImg.src = img.src;
+        fullImg.alt = img.alt || 'Full size image';
+        overlay.classList.add('visible');
+    });
 });

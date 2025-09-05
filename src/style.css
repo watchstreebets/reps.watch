@@ -223,6 +223,29 @@ table tbody tr:first-child {
     border-radius: 4px;
 }
 
+/* Lightweight image lightbox */
+#image-lightbox-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.75);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    padding: 2rem;
+}
+
+#image-lightbox-overlay.visible {
+    display: flex;
+}
+
+#image-lightbox-img {
+    max-width: 90vw;
+    max-height: 90vh;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    border-radius: 8px;
+}
+
 .group-start td {
     border-top: 2px solid var(--primary-color);
 }
