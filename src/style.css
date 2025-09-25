@@ -693,14 +693,9 @@ table tbody tr:first-child {
         display: none;
     }
 
-    /* Show mobile-specific elements */
-    .mobile-details,
-    .mobile-variations,
-    .mobile-group-header,
-    .mobile-genuine-data,
-    .mobile-replica-data,
-    .mobile-variations-container {
-        display: block;
+    /* Hide the replica details header on mobile */
+    .mobile-group-header {
+        display: none;
     }
 
     /* Hide all individual table cells on mobile since we show everything in the image cell */
