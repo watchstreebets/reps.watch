@@ -15,6 +15,7 @@ body {
     background-color: var(--background-color);
     color: var(--text-color);
     line-height: 1.6;
+    overflow-x: hidden;
 }
 
 header {
@@ -408,8 +409,35 @@ table tbody tr:first-child {
    Responsive Styles for Mobile
    ========================================================================== */
 @media screen and (max-width: 768px) {
-    main {
+    .header-container {
         padding: 0 1rem;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .logo-image {
+        height: 35px;
+    }
+
+    nav {
+        gap: 1.5rem;
+    }
+
+    .filters {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.75rem;
+        align-items: stretch;
+    }
+
+    .filters > * {
+        flex: 1 1 auto;
+        min-width: 0;
+    }
+
+    .filters input, .filters select {
+        font-size: 16px; /* Prevent zoom on iOS */
+        width: 100%;
     }
 
     table thead {
@@ -561,7 +589,7 @@ table tbody tr:first-child {
 
     .mobile-variations-container {
         display: block;
-        overflow-x: auto;
+        overflow: hidden;
         -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
     }
 
@@ -570,7 +598,7 @@ table tbody tr:first-child {
         width: 100%;
         border-collapse: collapse;
         margin: 0;
-        table-layout: auto;
+        table-layout: fixed;
         border-spacing: 0;
         box-sizing: border-box;
     }
@@ -640,24 +668,24 @@ table tbody tr:first-child {
     /* Ensure proper column alignment with responsive widths */
     .mobile-variations th:nth-child(1), .mobile-variations td:nth-child(1) { 
         text-align: center;
-        min-width: 60px;
+        width: 20%;
     } /* Factory */
     .mobile-variations th:nth-child(2), .mobile-variations td:nth-child(2) { 
         text-align: center;
-        min-width: 50px;
+        width: 15%;
     } /* Version */
     .mobile-variations th:nth-child(3), .mobile-variations td:nth-child(3) { 
         text-align: center;
-        min-width: 80px;
+        width: 25%;
     } /* Movement */
     .mobile-variations th:nth-child(4), .mobile-variations td:nth-child(4) { 
         text-align: center;
         font-weight: bold;
-        min-width: 50px;
+        width: 15%;
     } /* Rating */
     .mobile-variations th:nth-child(5), .mobile-variations td:nth-child(5) { 
         text-align: left;
-        min-width: 100px;
+        width: 25%;
     } /* Notes */
 
     /* Hide desktop-specific elements on mobile */
@@ -691,14 +719,20 @@ table tbody tr:first-child {
         display: none;
     }
 
-    /* Only show the image cell which contains all the mobile layout */
-    #reviews-table td[data-col="image_url"] {
-        display: block;
-        padding: 0;
-        border: none;
+    /* Additional overflow prevention */
+    * {
+        max-width: 100%;
+        box-sizing: border-box;
     }
 
-    #reviews-table td[data-col="image_url"]::before {
-        display: none;
+    /* Ensure images don't overflow */
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+
+    /* Prevent any element from causing horizontal scroll */
+    .controls-container {
+        overflow-x: hidden;
     }
 }
