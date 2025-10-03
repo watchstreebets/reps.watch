@@ -19,13 +19,33 @@ body {
 }
 
 header {
-    background-color: var(--primary-color);
+    background: linear-gradient(135deg, #34495e 0%, #2c3e50 50%, #1a252f 100%);
+    background-size: 200% 200%;
+    position: relative;
     color: white;
     padding: 1rem 0;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15), 0 1px 3px rgba(0,0,0,0.1);
     position: sticky;
     top: 0;
     z-index: 1000;
+}
+
+header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+        repeating-linear-gradient(
+            45deg,
+            transparent,
+            transparent 10px,
+            rgba(255, 255, 255, 0.02) 10px,
+            rgba(255, 255, 255, 0.02) 20px
+        );
+    pointer-events: none;
 }
 
 .header-container {
@@ -35,6 +55,8 @@ header {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    position: relative;
+    z-index: 1;
 }
 
 .logo {
@@ -107,16 +129,37 @@ table th {
 }
 
 table thead tr:first-child th {
-    background-color: var(--primary-color);
+    background: linear-gradient(135deg, #34495e 0%, #2c3e50 50%, #253544 100%);
     color: white;
     font-weight: bold;
     border-bottom: 1px solid var(--border-color);
+    position: relative;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+}
+
+table thead tr:first-child th::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+        repeating-linear-gradient(
+            45deg,
+            transparent,
+            transparent 8px,
+            rgba(255, 255, 255, 0.03) 8px,
+            rgba(255, 255, 255, 0.03) 16px
+        );
+    pointer-events: none;
 }
 
 table thead tr:nth-child(2) th {
-    background-color: #e5e5e5;
+    background: linear-gradient(to bottom, #f0f0f0 0%, #e5e5e5 100%);
     color: var(--text-color);
     font-weight: 500;
+    border-top: 1px solid rgba(255, 255, 255, 0.5);
 }
 
 table tbody tr:nth-child(even) {
