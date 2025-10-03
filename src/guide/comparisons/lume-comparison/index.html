@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="slug" content="/guide/comparisons/lume-comparison/">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lume Comparison - Reps Watch</title>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/style.mobile.css">
+    <link rel="icon" type="image/png" href="/assets/favicon.png">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <img src="/assets/logo.png" alt="Logo" class="logo-image">
+            </div>
+            <nav>
+                <a href="/">Reviews</a>
+                <a href="/dealers/">Trusted Dealers</a>
+                <a href="/guides/" class="active">Guides</a>
+            </nav>
+        </div>
+    </header>
+    <main>
+        <section class="guide-article">
+            <h1>Lume Comparison</h1>
+            <p>Compare the lume quality across different replica watches. Click on any image to view in full screen with navigation.</p>
+            
+            <div class="slideshow-container">
+                <div class="slideshow-images" id="slideshow-images">
+                    <!-- Images will be loaded dynamically -->
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <!-- Image Modal with Slideshow -->
+    <div id="image-lightbox-overlay">
+        <button id="image-lightbox-close" aria-label="Close image">×</button>
+        <button id="image-lightbox-prev" aria-label="Previous image">‹</button>
+        <button id="image-lightbox-next" aria-label="Next image">›</button>
+        <img id="image-lightbox-img" alt="Full size image">
+        <div id="image-lightbox-caption"></div>
+    </div>
+    
+    <script src="/js/lume-comparison.js"></script>
+</body>
+</html>

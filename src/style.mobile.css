@@ -15,6 +15,52 @@ html {
 }
 
 @media screen and (max-width: 768px) {
+    /* Slideshow mobile styles */
+    .slideshow-images {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .slideshow-thumbnail {
+        height: 250px;
+    }
+
+    #image-lightbox-prev,
+    #image-lightbox-next {
+        width: 40px;
+        height: 40px;
+        font-size: 24px;
+    }
+
+    #image-lightbox-prev {
+        left: 10px;
+    }
+
+    #image-lightbox-next {
+        right: 10px;
+    }
+
+    #image-lightbox-caption {
+        font-size: 12px;
+        padding: 6px 12px;
+        bottom: 10px;
+        max-width: 90%;
+    }
+
+    #image-lightbox-img {
+        max-width: 95vw;
+        max-height: 80vh;
+    }
+
+    .guide-article {
+        padding: 1rem;
+    }
+
+    .guide-article h1 {
+        font-size: 1.5rem;
+    }
+    
+
     .header-container {
         padding: 0 1rem;
         flex-direction: column;

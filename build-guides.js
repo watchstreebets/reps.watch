@@ -65,7 +65,7 @@ function copyStaticAssets() {
         'index.html', 'dealers.html', 'guides.html',
         'style.css', 'style.mobile.css',
                 'script.js', 'js/',
-        'assets/', 'data/', 'guide/quality/'
+        'assets/', 'data/', 'guide/quality/', 'guide/comparisons/'
     ];
 
     assets.forEach(asset => {

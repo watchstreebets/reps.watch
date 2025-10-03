@@ -269,6 +269,127 @@ table tbody tr:first-child {
     background: rgba(0,0,0,0.8);
 }
 
+/* Slideshow navigation arrows */
+#image-lightbox-prev,
+#image-lightbox-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 48px;
+    height: 48px;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,0.6);
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    font-size: 32px;
+    line-height: 1;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    z-index: 2001;
+}
+
+#image-lightbox-prev {
+    left: 20px;
+}
+
+#image-lightbox-next {
+    right: 20px;
+}
+
+#image-lightbox-prev:hover,
+#image-lightbox-next:hover {
+    background: rgba(0,0,0,0.8);
+}
+
+/* Image caption */
+#image-lightbox-caption {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0,0,0,0.8);
+    color: #fff;
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-size: 14px;
+    max-width: 80%;
+    text-align: center;
+}
+
+/* Slideshow container */
+.slideshow-container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+.slideshow-images {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.slideshow-item {
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.slideshow-item:hover {
+    transform: translateY(-4px);
+}
+
+.slideshow-thumbnail {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    transition: box-shadow 0.2s ease;
+}
+
+.slideshow-item:hover .slideshow-thumbnail {
+    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+}
+
+.slideshow-caption {
+    margin-top: 0.5rem;
+    text-align: center;
+    font-size: 14px;
+    color: var(--text-color);
+}
+
+.guide-article {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+}
+
+.guide-article h1 {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+.guide-article p {
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+}
+
+.no-images {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: #666;
+}
+
+.no-images code {
+    background: #f4f4f4;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: monospace;
+}
+
 /* Back-to-Top button */
 #back-to-top {
     position: fixed;
