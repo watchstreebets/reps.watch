@@ -6,7 +6,7 @@
     --text-color: #34495e;
     --border-color: #bdc3c7;
     --gold-highlight: #f1c40f;
-    --green-highlight: #2ecc71;
+    --green-highlight: #d3d3d3;
 }
 
 body {
@@ -430,8 +430,16 @@ table tbody tr:first-child {
     position: relative;
 }
 
-.highlight-gold { background-color: var(--gold-highlight) !important; }
-.highlight-green { background-color: var(--green-highlight) !important; }
+.highlight-gold { 
+    background: linear-gradient(135deg, #f9d423 0%, #e8b923 50%, #d4a017 100%) !important;
+    color: #2c3e50 !important;
+    font-weight: 500;
+}
+.highlight-green { 
+    background: linear-gradient(135deg, #e8e8e8 0%, #c0c0c0 50%, #a8a8a8 100%) !important;
+    color: #2c3e50 !important;
+    font-weight: 500;
+}
 
 .legend {
     text-align: center;
@@ -450,6 +458,15 @@ table tbody tr:first-child {
     height: 15px;
     margin-right: 5px;
     border: 1px solid #ccc;
+    border-radius: 2px;
+}
+
+.legend-color.highlight-gold {
+    border-color: #d4a017;
+}
+
+.legend-color.highlight-green {
+    border-color: #a8a8a8;
 }
 
 /* Hide mobile-specific elements on desktop */
