@@ -1,6 +1,8 @@
 id,brand,model,reference_number,market_price,case_size,thickness,complications,factory,version,movement,dealer_price,rating,notes,image_url
 AP-RO-15500,Audemars Piguet,Royal Oak,15500,35000,41,10.4,Date,APSF,,4302 Clone,518,4.5,,https://www.christies.com/img/LotImages/2024/NYR/2024_NYR_23091_0228_000(audemars_piguet_stainless_steel_royal_oak_ref_15500st114928).jpg
 AP-RO-15500,Audemars Piguet,Royal Oak,15500,35000,41,10.4,Date,ZF,v3,4302 Clone,468,4.0,,https://img.chrono24.com/images/uhren/41995429-x3o7ecvycz0pzydpdvgpkaga-Square280.jpg
+AP-RO-15510,Audemars Piguet,Royal Oak,15510,30000,41,10.4,Date,TOPF,,DD4302,,4.5,,https://luxurywatchesusa.com/wp-content/uploads/2022/07/AP-15510ST-white-1200x1200-cropped.jpg
+AP-RO-15510,Audemars Piguet,Royal Oak,15510,30000,41,10.4,Date,DDF,,DD4302,,4.5,,https://luxurywatchesusa.com/wp-content/uploads/2022/07/AP-15510ST-white-1200x1200-cropped.jpg
 AP-RO-15510,Audemars Piguet,Royal Oak,15510,30000,41,10.4,Date,APSF,,4302 Clone,,4.5,,https://luxurywatchesusa.com/wp-content/uploads/2022/07/AP-15510ST-white-1200x1200-cropped.jpg
 AP-RO-15510,Audemars Piguet,Royal Oak,15510,30000,41,10.4,Date,ZF,,4302 Clone,,4.0,,https://img.chrono24.com/images/uhren/26227360-3d5enayw4uflubhyajc3awvt-Square280.jpg
 AP-RO-15400,Audemars Piguet,Royal Oak,15400,50000,41,9.8,Date,APSF,,3120 Clone,,4.5,,https://cdn.watchcharts.com/listings/bc7365b7-225b-4204-a44d-4457d068bab7.jpg?d=600x600
@@ -18,16 +20,17 @@ AP-RO-15202,Audemars Piguet,Royal Oak,15202,145000,39,8.1,Date,BF,,MY9015,,3.0,A
 AP-RO-16202,Audemars Piguet,Royal Oak,16202,45000,41,8.1,Date,ZF,,MY9015,,4.5,All dial variants,https://img.chrono24.com/images/uhren/41992029-hfalbje2hjlt463fj81q4pgo-Square280.jpg
 AP-RO-67651,Audemars Piguet,Royal Oak,67651,17000,33,7.0,Date,ZF,,Quartz,,4.0,33mm,https://ficotime.com/wp-content/uploads/2024/07/30109_001.jpg
 AP-RO-67651,Audemars Piguet,Royal Oak,67651,17000,33,7.0,Date,JJF,,Quartz,,3.5,33mm,https://img.chrono24.com/images/uhren/42040049-8lx66stuno855obztsv08orv-Square280.jpg
+AP-RO-26240,Audemars Piguet,Royal Oak,26240,60000,41,12.4,"Chronograph, Date",DDF,SW Dial,DD4401,968,4.7,,https://www.watchguys.com/cdn/shop/files/Audemars_Piguet_Royal_Oak_26240ST.OO.1320ST.01_3000x.webp
+AP-RO-26240,Audemars Piguet,Royal Oak,26240,60000,41,12.4,"Chronograph, Date",TOPF,,DD4401,888,4.5,,https://www.watchguys.com/cdn/shop/files/Audemars_Piguet_Royal_Oak_26240ST.OO.1320ST.01_3000x.webp
 AP-RO-26240,Audemars Piguet,Royal Oak,26240,60000,41,12.4,"Chronograph, Date",APSF,v2,SH4401,888,4.5,,https://www.watchguys.com/cdn/shop/files/Audemars_Piguet_Royal_Oak_26240ST.OO.1320ST.01_3000x.webp
-AP-RO-26240,Audemars Piguet,Royal Oak,26240,60000,41,12.4,"Chronograph, Date",DDF,,A4401,958,4.0,,https://www.watchguys.com/cdn/shop/files/Audemars_Piguet_Royal_Oak_26240ST.OO.1320ST.01_3000x.webp
 BRT-AVG-GMT,Breitling,Avenger,Breitling Avenger II GMT GF,3450,43,12.2,"Date, GMT",GF,,A2836,,4.5,first batch with correct hand stack,https://img.chrono24.com/images/uhren/31665695-ivb4ljc2qpffik7b91kpgswb-ExtraLarge.jpg
 BRT-AVG-B01,Breitling,Avenger,B01 Chrono 45mm,5500,45,16.5,"Chronograph, Date",BLSF,,A7750,,3.5,,https://www.vsofficial.com/wp-content/uploads/2024/07/1719926823-dfd0c4577d499d4.jpg
 BRT-AVG-43,Breitling,Avenger,43mm,3450,43,12.2,Date,OXF,,A2824,,3.5,,https://www.listerhorsfall.co.uk/wp-content/uploads/2020/01/A17318101B1X1.jpg
 BRT-AVG-GMT43,Breitling,Avenger,43mm GMT,3450,43,12.2,"Date, GMT",OXF,,A2836,,3.5,,https://www.amayajoyeros.com/wp-content/uploads/2020/05/Breitling-A3239011-BC35-700x700.png
 BRT-SO-HER,Breitling,SuperOcean,Heritage,3850,42,14.35,Date,BLSF,,A2824,,4.5,,https://content.thewosgroup.com/productimage/17531358/17531358_1.jpg?impolicy=zoom
 BRT-SO-HER2,Breitling,SuperOcean,Heritage II,3850,42,14.35,Date,OMF,,A2824,,4.0,,https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%2Fid%2FOIP.IaLuznFCSNcOgXuQKCv3TQHaJ4%3Fpid%3DApi&f=1&ipt=1a491d79dd2d0dee00b7e62263b7fb29c7d2fc1ca535a6bb92f06b120d633023
-BRT-NAV-41,Breitling,Navitimer,41mm,4700,41,10.0,Date,V7F,,A2824,,4.5,Upgradeable to SW200,https://content.thewosgroup.com/productimage/17531689/17531689_1.jpg
-BRT-NAV-41,Breitling,Navitimer,41mm,4700,41,10.0,Date,TF,,A2824,,3.5,,https://img.chrono24.com/images/uhren/36464325-kn369pd6cmx94ldjnjm9x8va-Square280.jpg
+BRT-NAV-41,Breitling,Navitimer,41mm,4700,41,10.0,Date,V7F,,A2824,,4.2,Upgradeable to SW200,https://content.thewosgroup.com/productimage/17531689/17531689_1.jpg
+BRT-NAV-41,Breitling,Navitimer,41mm,4700,41,10.0,Date,TF,,A2824,,4.2,,https://img.chrono24.com/images/uhren/36464325-kn369pd6cmx94ldjnjm9x8va-Square280.jpg
 BRT-NAV-41GMT,Breitling,Navitimer,41mm GMT,4700,41,10.0,"Date, GMT",BLSF,,A2836 GMT,,3.5,,https://img.chrono24.com/images/uhren/36464325-kn369pd6cmx94ldjnjm9x8va-Square280.jpg
 BRT-TRANS-DD,Breitling,Transocean,Breitling Transocean Day Date Blue,4350,43,12.8,"Date, Day",V7F,,A2824,,4.5,,https://img.chrono24.com/images/uhren/41635377-cxuojdl8pb3rh8x10u9t91qy-Square280.jpg
 BVL-OCTO-FIN,Bvlgari,Octo,Finissimo,9500,40,6.4,Small Seconds,BVF,,A23J,,4.0,,https://content.thewosgroup.com/productimage/18970153/18970153_1.jpg?impolicy=zoom
@@ -236,7 +239,9 @@ RX-DJ-41,Rolex,Datejust,41mm,12000,41,12,Date,GMF,,A2824,,3.0,,https://a.1stdibs
 RX-DJ-41,Rolex,Datejust,41mm,12000,41,12,Date,ZF,,A2824,,2.5,,https://a.1stdibscdn.com/rolex-datejust-41mm-blue-dial-126334-for-sale/j_6073/j_194544921685630467538/j_19454492_1685630467957_bg_processed.jpg
 RX-DJ-41,Rolex,Datejust,41mm,12000,41,12,Date,EWEF,,A3235,,2.5,,https://a.1stdibscdn.com/rolex-datejust-41mm-blue-dial-126334-for-sale/j_6073/j_194544921685630467538/j_19454492_1685630467957_bg_processed.jpg
 RX-DJ-41,Rolex,Datejust,41mm,12000,41,12,Date,GDF,,MY8215,,1.5,Small step above shitter,https://a.1stdibscdn.com/rolex-datejust-41mm-blue-dial-126334-for-sale/j_6073/j_194544921685630467538/j_19454492_1685630467957_bg_processed.jpg
-RX-DD-40MM,Rolex,DayDate,40mm,40000,40,13.1,"Date, Day",THB,weighted,VR3255,,4.5,,https://www.prestigetime.com/images/watches/228238-Champagne-indexn.jpg
+RX-DD-40MM,Rolex,DayDate,40mm,40000,40,13.1,"Date, Day",RCF,weighted,SH3255,,4.5,,https://www.prestigetime.com/images/watches/228238-Champagne-indexn.jpg
+RX-DD-40MM,Rolex,DayDate,40mm,40000,40,13.1,"Date, Day",VSF,weighted,DD3255,,4.5,,https://www.prestigetime.com/images/watches/228238-Champagne-indexn.jpg
+RX-DD-40MM,Rolex,DayDate,40mm,40000,40,13.1,"Date, Day",THB,weighted,VR3255,,4.3,,https://www.prestigetime.com/images/watches/228238-Champagne-indexn.jpg
 RX-DD-40MM,Rolex,DayDate,40mm,40000,40,13.1,"Date, Day",GMF,,A2836,,4.0,,https://img.chrono24.com/images/uhren/2paisa6nairm-ugwlkyz49h1hlsex506ty0gb-Square280.jpg
 RX-DD-40MM,Rolex,DayDate,40mm,40000,40,13.1,"Date, Day",BPF,,A2836,,4.0,,https://img.chrono24.com/images/uhren/2paisa6nairm-ugwlkyz49h1hlsex506ty0gb-Square280.jpg
 RX-DD-40MM,Rolex,DayDate,40mm,40000,40,13.1,"Date, Day",QF,weighted,VR3255,,4.0,,https://img.chrono24.com/images/uhren/2paisa6nairm-ugwlkyz49h1hlsex506ty0gb-Square280.jpg
